@@ -1,6 +1,6 @@
 # node-firefox-find-app [![Build Status](https://secure.travis-ci.org/mozilla/node-firefox-find-app.png?branch=master)](http://travis-ci.org/mozilla/node-firefox-find-app)
 
-> Find installed apps on a given (debuggable) runtime.
+> Find if an app is installed on a runtime.
 
 This is part of the [node-firefox](https://github.com/mozilla/node-firefox) project.
 
