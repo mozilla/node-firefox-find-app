@@ -21,9 +21,14 @@ function findApp(options) {
 
     getWebAppsActor(client)
       .then(listInstalledApps)
-      .then(filterAppsByName(manifest.name))
-      .then(function(result) {
-        resolve(result);
+      .then(function(installedApps) {
+        // And we filter the installed apps down to
+        // just the apps with the same name as in the manifest
+        var name = manifest.name;
+        
+        resolve(installedApps.filter(function(app) {
+          return app.name === name;
+        }));
       });
 
   });
@@ -63,15 +68,3 @@ function listInstalledApps(webAppsActor) {
   });
 }
 
-
-function filterAppsByName(name) {
-
-  return function(apps) {
-    return new Promise(function(resolve) {
-      resolve(apps.filter(function(app) {
-        return app.name === name;
-      }));
-    });
-  };
-
-}
