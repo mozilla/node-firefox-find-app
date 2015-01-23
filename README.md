@@ -59,25 +59,33 @@ If no `options` are provided, or if `options` is an empty `Object` (`{}`), then 
 ```javascript
 var findApp = require('node-firefox-find-app');
 var startSimulator = require('node-firefox-start-simulator');
-var manifestJSON = loadJSON('manifest.webapp');
+var connect = require('node-firefox-connect');
+var manifest = loadJSON('/path/to/manifest.webapp'));
 
-startSimulator().then(function(client) {
+startSimulator().then(function(simulator) {
 
-  findApp({
-    manifest: manifestJSON,
-    client: client
-  }).then(function(apps) {
-    if(apps.length === 0) {
-      console.log('Not installed');
-    }
+  connect(simulator.port).then(function(client) {
+
+    findApp({
+      manifest: manifest,
+      client: client
+    }).then(function(result) {
+
+      if (result.length === 0) {
+        console.log('App is not installed');
+      } else {
+        console.log('Found app!', result);
+      }
+
+      client.disconnect();
+      stopSimulator(simulator);
+
+    });
+
   });
 
-}, onError);
+});
 
-
-function onError(err) {
-  console.error(err);
-}
 
 ```
 
