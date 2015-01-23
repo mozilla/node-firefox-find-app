@@ -1,6 +1,6 @@
 # node-firefox-find-app [![Build Status](https://secure.travis-ci.org/mozilla/node-firefox-find-app.png?branch=master)](http://travis-ci.org/mozilla/node-firefox-find-app)
 
-> Find installed apps on a given (debuggable) runtime.
+> Find if an app is installed on a runtime.
 
 This is part of the [node-firefox](https://github.com/mozilla/node-firefox) project.
 
@@ -46,38 +46,42 @@ This module is not on npm yet.
 findApp(options) // returns a Promise
 ```
 
-where `options` is a plain `Object` with any of the following:
+where `options` is a plain `Object` which must contain the following:
 
 * `manifest`: the manifest contents, in JSON format
 * `client`: the remote client where we want to find if this app is installed
 
 If no `options` are provided, or if `options` is an empty `Object` (`{}`), then `findApp` will fail (how can you find *you don't know what app exactly* in *you don't know where*?)
 
+
 ### Finding apps in simulators, using the manifest JSON contents
 
 ```javascript
 var findApp = require('node-firefox-find-app');
 var startSimulator = require('node-firefox-start-simulator');
-var manifestJSON = require('./manifest.app');
+var manifestJSON = loadJSON('manifest.webapp');
 
-startSimulator({ connect: true }).then(function(results) {
+startSimulator().then(function(client) {
 
   findApp({
     manifest: manifestJSON,
-    client: results.client
-  }).then(onFindAppResults);
-  
+    client: client
+  }).then(function(apps) {
+    if(apps.length === 0) {
+      console.log('Not installed');
+    }
+  });
+
 }, onError);
 
-function onFindAppResults(results) {
-  console.log('Find app: ', results);
-}
 
 function onError(err) {
   console.error(err);
 }
 
 ```
+
+You can have a look at the `examples` folder for a complete example.
 
 ## Running the tests
 
