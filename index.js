@@ -25,7 +25,7 @@ function findApp(options) {
         // And we filter the installed apps down to
         // just the apps with the same name as in the manifest
         var name = manifest.name;
-        
+
         resolve(installedApps.filter(function(app) {
           return app.name === name;
         }));
