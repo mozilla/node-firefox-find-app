@@ -2,12 +2,12 @@
 
 // See https://github.com/jshint/jshint/issues/1747 for context
 /* global -Promise */
-var Promise = require('es6-Promise').Promise;
+var Promise = require('es6-promise').Promise;
 
 module.exports = findApp;
 
 function findApp(options) {
-  
+
   options = options || {};
 
   var client = options.client;
